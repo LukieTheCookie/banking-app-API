@@ -5,30 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "account_holder_name")
-    private String accountHolderName;
+    private String username;
+    private String email;
+    private String password; //Todo: Replace with OAuth ID
 
-    private double balance;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "account")
-    private List<Transaction> transactions;
+    @OneToMany(mappedBy = "user")
+    private List<Account> accounts;
 }
