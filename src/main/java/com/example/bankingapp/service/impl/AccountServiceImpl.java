@@ -2,8 +2,10 @@ package com.example.bankingapp.service.impl;
 
 import com.example.bankingapp.dto.AccountDto;
 import com.example.bankingapp.entity.Account;
+import com.example.bankingapp.entity.User;
 import com.example.bankingapp.mapper.AccountMapper;
 import com.example.bankingapp.repository.AccountRepository;
+import com.example.bankingapp.repository.UserRepository;
 import com.example.bankingapp.service.AccountService;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +16,20 @@ import java.util.stream.Collectors;
 public class AccountServiceImpl implements AccountService {
 
     private AccountRepository accountRepository;
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    private final UserRepository userRepository;
+    public AccountServiceImpl(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public AccountDto createAccount(AccountDto accountDto) {
+        User user = userRepository
+                .findById(accountDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         Account account = AccountMapper.mapToAccount(accountDto);
+        account.setUser(user);
         Account savedAccount = accountRepository.save(account);
         return AccountMapper.mapToAccountDto(savedAccount);
     }

@@ -5,13 +5,14 @@ import com.example.bankingapp.entity.Account;
 
 public class AccountMapper {
     public static Account mapToAccount(AccountDto accountDto) {
-        return new Account(
-                accountDto.getId(),
-                accountDto.getAccountHolderName(),
-                accountDto.getBalance(),
-                accountDto.getUser(),
-                accountDto.getTransactions()
-        );
+        Account account = new Account();
+
+        account.setId(accountDto.getId());
+        account.setAccountHolderName(accountDto.getAccountHolderName());
+        account.setBalance(accountDto.getBalance());
+        account.setTransactions(accountDto.getTransactions());
+
+        return account;
     }
 
     public static AccountDto mapToAccountDto(Account account){
@@ -19,7 +20,7 @@ public class AccountMapper {
                 account.getId(),
                 account.getAccountHolderName(),
                 account.getBalance(),
-                account.getUser(),
+                account.getUser() != null ? account.getUser().getId() : null,
                 account.getTransactions()
         );
     }

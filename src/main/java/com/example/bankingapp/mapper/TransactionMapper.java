@@ -5,13 +5,13 @@ import com.example.bankingapp.entity.Transaction;
 
 public class TransactionMapper {
     public static Transaction mapToTransaction(TransactionDto transactionDto){
-        return new Transaction(
-                transactionDto.getId(),
-                transactionDto.getAmount(),
-                transactionDto.getTimestamp(),
-                transactionDto.getType(),
-                transactionDto.getAccount()
-        );
+        Transaction transaction = new Transaction();
+        transaction.setId(transactionDto.getId());
+        transaction.setAmount(transactionDto.getAmount());
+        transaction.setTimestamp(transactionDto.getTimestamp());
+        transaction.setType(transactionDto.getType());
+
+        return transaction;
     }
 
     public static TransactionDto mapToTransactionDto(Transaction transaction){
@@ -20,7 +20,7 @@ public class TransactionMapper {
                 transaction.getAmount(),
                 transaction.getTimestamp(),
                 transaction.getType(),
-                transaction.getAccount()
+                transaction.getAccount() != null ? transaction.getAccount().getId() : null
         );
     }
 }

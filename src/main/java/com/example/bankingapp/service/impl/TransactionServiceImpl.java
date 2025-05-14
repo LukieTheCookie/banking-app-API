@@ -11,6 +11,8 @@ import com.example.bankingapp.service.TransactionService;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TransactionServiceImpl implements TransactionService {
 
@@ -26,7 +28,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public TransactionDto deposit(TransactionDto transactionDto) {
         Account account = accountRepository
-                .findById(transactionDto.getId())
+                .findById(transactionDto.getAccountId())
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
         double newBalance = account.getBalance() + transactionDto.getAmount();
@@ -44,8 +46,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public TransactionDto withdraw(TransactionDto transactionDto) {
-        Account account = accountRepository.findById(transactionDto.getId())
+        Account account = accountRepository.findById(transactionDto.getAccountId())
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
         if (account.getBalance() < transactionDto.getAmount()) {
@@ -65,5 +68,18 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(transaction);
 
         return TransactionMapper.mapToTransactionDto(transaction);
+    }
+
+    @Override
+    public List<TransactionDto> getTransactionByAccountId(Long accountId) {
+        Account account = accountRepository
+                .findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        List<Transaction> transactions = transactionRepository.findByAccount(account);
+
+        return transactions.stream()
+                .map(TransactionMapper::mapToTransactionDto)
+                .collect(Collectors.toList());
     }
 }

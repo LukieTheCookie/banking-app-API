@@ -13,5 +13,5 @@ public class TransactionDto {
     private double amount;
     private LocalDateTime timestamp;
     private TransactionType type; //Todo: create enum with types (Deposit, Withdraw, etc)
-    private Account account;
+    private Long accountId;
 }
