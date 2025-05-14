@@ -71,7 +71,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDto> getTransactionByAccountId(Long accountId) {
+    public List<TransactionDto> getTransactionsByAccountId(Long accountId) {
         Account account = accountRepository
                 .findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
