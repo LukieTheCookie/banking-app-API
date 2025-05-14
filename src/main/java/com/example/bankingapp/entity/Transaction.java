@@ -1,5 +1,6 @@
 package com.example.bankingapp.entity;
 
+import com.example.bankingapp.dto.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class Transaction {
 
     private double amount;
     private LocalDateTime timestamp;
-    private String type; //Todo: create enum with types (Deposit, Withdraw, etc)
+    private TransactionType type; //Todo: create enum with types (Deposit, Withdraw, etc)
 
     @ManyToOne
     @JoinColumn(name = "account_id")
